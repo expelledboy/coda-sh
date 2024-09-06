@@ -15,16 +15,18 @@ cd ~/src/project
 
 git clone git@github.com:expelledboy/coda-sh.git vendor/coda-sh
 
-echo <<EOF >> ~/main.sh
+cat <<EOF > ./main.sh
 #!/bin/bash
 export CODA_API_KEY="your-coda-api-key"
 source vendor/coda-sh/src/coda_client.sh
+
 # Your code here
+list_docs | jq -r '.items[] | .id + " " + .name'
 EOF
 
-chmod +x ~/main.sh
+chmod +x ./main.sh
 
-~/main.sh
+./main.sh
 ```
 
 ## API Methods
