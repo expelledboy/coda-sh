@@ -1,0 +1,17 @@
+# EditorConfig is a universal config for all IDEs and text editors: http://EditorConfig.org
+
+# Top-most EditorConfig file.
+root = true
+
+[*]
+insert_final_newline = true
+end_of_line = lf
+
+[*.sh]
+indent_style = space
+indent_size = 2
+
+[Justfile]
+indent_style = tab
+indent_size = 2
+
