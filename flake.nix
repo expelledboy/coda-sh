@@ -20,6 +20,10 @@
               bats-assert
             ]))
           ];
+
+          shellHook = ''
+            git config --local core.hooksPath .github/hooks
+          '';
         };
       });
 }
