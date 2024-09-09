@@ -1,4 +1,4 @@
-# Coda Bash Client
+# Coda cli and Bash client
 
 A Bash client and cli for interacting with the Coda.
 
@@ -18,7 +18,7 @@ nix profile install expelledboy/coda-sh
 
 Usage:
 
-```bash
+```
 $ coda
 Usage: coda [OPTIONS] <command> [sub-command] [args]
 
