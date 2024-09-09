@@ -12,7 +12,7 @@ curl_request() {
   curl -s -X "$1" "$BASE_URL/$2" \
     -H "Authorization: Bearer $CODA_API_KEY" \
     -H "Content-Type: application/json" \
-    $([ "$1" = "POST" ] || [ "$1" = "PUT" ] && echo "-d '$3'")
+    $([ "$1" = "POST" ] || [ "$1" = "PUT" ] && echo "-d $3")
 }
 
 # GET request: $1 = endpoint
@@ -45,6 +45,7 @@ push_button() { post "docs/$1/tables/$2/rows/$3/buttons/$4" "{}"; }
 get_row() { get "docs/$1/tables/$2/rows/$3"; }
 update_row() { put "docs/$1/tables/$2/rows/$3" "$4"; }
 delete_row() { delete "docs/$1/tables/$2/rows/$3"; }
+upsert_rows() { post "docs/$1/tables/$2/rows" "$3"; }
 
 ### Pages ###
 list_pages() { get "docs/$1/pages"; }

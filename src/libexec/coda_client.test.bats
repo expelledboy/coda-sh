@@ -1,67 +1,22 @@
 #!/usr/bin/env bats
 
-# Mock curl function to simulate Coda API responses
-curl() {
-  local method="$3"
-  local url="$4"
-
-  # Extract the endpoint by removing the base URL
-  local endpoint="${url#"$BASE_URL/"}"
-
-  if [ "$method" == "POST" ] || [ "$method" == "DELETE" ] || [ "$method" == "PUT" ]; then
-    echo '{"status":"OK"}'
-    return
-  fi
-
-  # Handle GET requests and mock based on the extracted endpoint
-  case "$endpoint" in
-  "docs")
-    echo '{"items":[{"id":"doc-123","name":"My Document"}]}'
-    ;;
-  "docs/$DOC_ID")
-    echo '{"id":"doc-123","name":"My Document"}'
-    ;;
-  "docs/$DOC_ID/tables")
-    echo '{"items":[{"id":"tbl-456","name":"My Table"}]}'
-    ;;
-  "docs/$DOC_ID/tables/$TABLE_ID")
-    echo '{"id":"tbl-456","name":"My Table"}'
-    ;;
-  "docs/$DOC_ID/tables/$TABLE_ID/rows/row-1")
-    echo '{"values":{"col-1":"value1","col-2":"value2"}}'
-    ;;
-  "docs/$DOC_ID/pages")
-    echo '{"items":[{"id":"page-789","name":"My Page"}]}'
-    ;;
-  "docs/$DOC_ID/pages/$PAGE_ID")
-    echo '{"id":"page-789","name":"My Page"}'
-    ;;
-  "docs/$DOC_ID/acl/permissions")
-    echo '{"items":[{"id":"perm-001","principal":{"email":"user@example.com"},"access":"read"}]}'
-    ;;
-  "categories")
-    echo '{"items":[{"id":"cat-001","name":"Category 1"}]}'
-    ;;
-  *)
-    echo '{"status":"OK"}'
-    ;;
-  esac
-}
-
 # Load BATS support and assert libraries
 setup() {
   bats_load_library bats-support
   bats_load_library bats-assert
 
-  export CODA_API_KEY="mock_api_key"
+  load ${BATS_CWD}/tests/helpers.sh
 
-  export DOC_ID="doc-123"
-  export TABLE_ID="tbl-456"
-  export PAGE_ID="page-789"
+  CODA_API_KEY="mock_api_key"
 
+  DOC_ID="doc-123"
+  TABLE_ID="tbl-456"
+  PAGE_ID="page-789"
+
+  curl() { mock_coda_api "$@"; }
   export -f curl
 
-  source ./src/coda_client.sh
+  source ./src/libexec/coda_client.sh
 }
 
 # Tests
