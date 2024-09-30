@@ -11,7 +11,7 @@
 
         coda-cli = pkgs.stdenv.mkDerivation {
           pname = "coda";
-          version = "0.1.0";
+          version = "0.1.1";
           src = ./src;
           buildInputs = [ pkgs.makeWrapper ];
           installPhase = ''
@@ -20,9 +20,10 @@
             install -m755 ./bin/coda.sh $out/bin/coda
             chmod +x $out/bin/coda
           '';
-          postInstall = ''
+          postFixup = ''
             wrapProgram $out/bin/coda \
-              --set LIBEXEC_PATH $out/libexec
+              --set LIBEXEC_PATH $out/libexec \
+              --set SCRIPT coda
           '';
         };
       in {

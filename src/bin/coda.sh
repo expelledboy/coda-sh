@@ -9,7 +9,7 @@ INPUT_FORMAT="json"
 
 # Function to print usage instructions
 usage() {
-  SCRIPT=$(basename "$0")
+  [ -n "$SCRIPT" ] || SCRIPT=$(basename "$0")
 
   cat <<EOF
 Usage: $SCRIPT [OPTIONS] <command> [sub-command] [args]
