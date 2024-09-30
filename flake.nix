@@ -38,7 +38,7 @@
               bats-assert
             ]))
           ]) ++ [
-            coda-cli
+            self.packages.${system}.coda-cli
           ];
 
           shellHook = ''
@@ -46,8 +46,12 @@
           '';
         };
 
-        packages.${system} = {
+        packages = {
           inherit coda-cli;
         };
-      });
+      }) // {
+        overlay = final: prev: {
+          coda-cli = self.packages.${final.system}.coda-cli;
+        };
+      };
 }
