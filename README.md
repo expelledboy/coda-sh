@@ -10,10 +10,49 @@ A Bash client and cli for interacting with the Coda.
 
 ## Bash CLI
 
+Run it via `nix run`:
+
+```bash
+nix run github:expelledboy/coda-sh#coda-cli
+```
+
 Install via nix:
 
 ```bash
-nix profile install expelledboy/coda-sh
+nix profile install github:expelledboy/coda-sh#coda-cli
+```
+
+Or as package via flake overlay:
+
+```nix
+{
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+
+  # 1. Add flake input
+  inputs.coda-sh.url = "github:expelledboy/coda-sh";
+  inputs.coda-sh.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.coda-sh.inputs.flake-utils.follows = "flake-utils";
+  
+  # 2. Reference flake argument
+  outputs = { self, nixpkgs, flake-utils, coda-sh }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            # 3. Add overlay
+            coda-sh.overlay
+          ];
+        };
+      in {
+        devShell = pkgs.mkShell {
+          buildInputs = [
+            # 4. Add package
+            coda-cli
+          ];
+        };
+      });
+}
 ```
 
 Usage:
