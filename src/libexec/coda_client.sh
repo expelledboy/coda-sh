@@ -8,11 +8,12 @@ BASE_URL="https://coda.io/apis/v1"
 # Common curl utility function (1-liner version)
 # $1 = HTTP method, $2 = endpoint, $3 = optional data (JSON for POST/PUT)
 curl_request() {
-  # shellcheck disable=SC2046
+  data=$( [ "$1" = "POST" ] || [ "$1" = "PUT" ] && echo "-d $3")
   curl -s -X "$1" "$BASE_URL/$2" \
     -H "Authorization: Bearer $CODA_API_KEY" \
     -H "Content-Type: application/json" \
-    $([ "$1" = "POST" ] || [ "$1" = "PUT" ] && echo "-d $3")
+    "$data"
+  [ -n "$CODA_CLI_DEBUG" ] && echo "$1 $BASE_URL/$2 $data" >&2
 }
 
 # GET request: $1 = endpoint

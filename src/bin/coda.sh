@@ -152,8 +152,8 @@ rows)
   case "$1" in
   get) output=$(get_row "$2" "$3" "$4") ;;
   update) output=$(update_row "$2" "$3" "$4" "$(prepare_input "$5")") ;;
-  insert) output=$(insert_rows "$2" "$3" "$(prepare_input "$3")") ;;
-  upsert) output=$(upsert_rows "$2" "$3" "$(prepare_input "$3")") ;;
+  insert) output=$(insert_rows "$2" "$3" "$(prepare_input "$4")") ;;
+  upsert) output=$(upsert_rows "$2" "$3" "$(prepare_input "$4")") ;;
   delete) output=$(delete_row "$2" "$3" "$4") ;;
   *) usage ;;
   esac
